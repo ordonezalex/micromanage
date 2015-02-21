@@ -3,7 +3,7 @@ package com.remindyou.remindyou;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,11 +38,9 @@ public class UserRemindersFragment extends Fragment {
      * @return A new instance of fragment UserRemindersFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserRemindersFragment newInstance(String param1, String param2) {
+    public static UserRemindersFragment newInstance() {
         UserRemindersFragment fragment = new UserRemindersFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
