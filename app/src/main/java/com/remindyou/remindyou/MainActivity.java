@@ -1,7 +1,6 @@
 package com.remindyou.remindyou;
 
-import android.app.FragmentManager;
-import android.content.ClipData;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,12 +8,18 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        FragmentManager manager = getSupportFragmentManager();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        manager.beginTransaction()
+                .replace(R.id.container, UserRemindersFragment.newInstance())
+                .commit();
+
     }
 
     @Override
