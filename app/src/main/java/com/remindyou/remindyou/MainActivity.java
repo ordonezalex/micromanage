@@ -1,12 +1,16 @@
 package com.remindyou.remindyou;
 
+import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
+
+    private String userPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +23,16 @@ public class MainActivity extends ActionBarActivity {
         manager.beginTransaction()
                 .replace(R.id.container, UserRemindersFragment.newInstance())
                 .commit();
+
+        TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number();
+
+        if (mPhoneNumber == null) {
+            System.out.print("User does not have a SIM card, or has multiple SIM cards.");
+        } else {
+            userPhoneNumber = mPhoneNumber;
+            System.out.println("User's phone number: " + userPhoneNumber);
+        }
 
     }
 
@@ -42,5 +56,9 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
     }
 }
