@@ -5,6 +5,7 @@
 .DS_Store
 /build
 .idea/
+*.iml
 
 # API Keys
 api_keys.xml
