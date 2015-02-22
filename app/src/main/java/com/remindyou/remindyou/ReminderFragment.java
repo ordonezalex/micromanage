@@ -1,7 +1,6 @@
 package com.remindyou.remindyou;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -9,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -17,7 +15,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.util.List;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,10 +33,13 @@ public class ReminderFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    public ReminderFragment() {
+        // Required empty public constructor
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
      * @param reminderId The ID associated with the reminder to pull.
      * @return A new instance of fragment ReminderFragment.
      */
@@ -54,12 +54,9 @@ public class ReminderFragment extends Fragment {
         return fragment;
     }
 
-    public ReminderFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             this.mReminderId = getArguments().getString(ARG_REMINDER_ID);
@@ -86,6 +83,7 @@ public class ReminderFragment extends Fragment {
     }
 
     public void onButtonPressed(Uri uri) {
+
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
@@ -93,6 +91,7 @@ public class ReminderFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
+
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
@@ -104,6 +103,7 @@ public class ReminderFragment extends Fragment {
 
     @Override
     public void onDetach() {
+
         super.onDetach();
         mListener = null;
     }
@@ -122,5 +122,4 @@ public class ReminderFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-
 }
