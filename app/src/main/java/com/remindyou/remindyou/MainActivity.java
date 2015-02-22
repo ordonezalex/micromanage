@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 import java.util.List;
 
@@ -33,26 +36,33 @@ public class MainActivity extends ActionBarActivity {
             query.whereEqualTo("Phone", userPhoneNumber);
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> parseObjects, ParseException e) {
+
                     if (e == null) {
                         if (parseObjects.isEmpty()) {
                             Log.wtf("MainActivity", "You no in database!");
 
-                            ParseObject user = ParseUser.create("_User");
-                            user.add("Phone", userPhoneNumber);
-                            user.add("Password", "poop");
-                            user.add("Username", "IAmAUser");
+                            ParseUser user = new ParseUser();
+                            user.setPassword("poop");
+                            user.setUsername("IAmAUser");
+                            user.put("Phone", userPhoneNumber);
 
-                            try {
-                                user.save();
-                            } catch (ParseException pe) {
-                                Log.d(App.TAG, pe.toString());
-                            }
+                            user.signUpInBackground(new SignUpCallback() {
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        Log.i(App.TAG, "User has signed up!");
+                                    } else {
+                                        Log.wtf("MainActivity", "Couldn't sign up, whyyyyyy?");
+                                    }
+                                }
+                            });
                         }
                     } else {
-                        Log.wtf("MainActivity", "Error D:");
+                        Log.wtf("MainActivity", e);
                     }
                 }
             });
+
+            Toast.makeText(this, getString(R.string.prompt_welcome), Toast.LENGTH_SHORT).show();
 
             getSupportFragmentManager()
                     .beginTransaction()
