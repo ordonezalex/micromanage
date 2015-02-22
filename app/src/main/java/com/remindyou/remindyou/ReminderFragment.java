@@ -25,6 +25,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ReminderFragment extends Fragment {
+
     /** Constant for our arg id for when we pass in he reminderId into the fragment. */
     private static final String ARG_REMINDER_ID = "reminderId";
 
@@ -40,7 +41,6 @@ public class ReminderFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @param reminderId The ID associated with the reminder to pull.
      * @return A new instance of fragment ReminderFragment.
      */
     public static ReminderFragment newInstance(String reminderId) {
