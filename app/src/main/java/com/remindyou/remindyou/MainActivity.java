@@ -21,7 +21,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         manager.beginTransaction()
-                .replace(R.id.container, UserRemindersFragment.newInstance())
+                .replace(R.id.container, UserRemindersFragment.newInstance(userPhoneNumber))
                 .commit();
 
         TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
