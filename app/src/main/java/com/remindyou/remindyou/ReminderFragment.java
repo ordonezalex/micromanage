@@ -25,22 +25,12 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class ReminderFragment extends Fragment {
-<<<<<<< HEAD
-//    // TODO: Rename parameter arguments, choose names that match
-//    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-=======
+
     /** Constant for our arg id for when we pass in he reminderId into the fragment. */
     private static final String ARG_REMINDER_ID = "reminderId";
 
     /** The property where we will store the reminder id. */
     private String mReminderId;
->>>>>>> e4ccabd7cbe143b870ee32d3c4c606a3cdc68616
 
     private OnFragmentInteractionListener mListener;
 
