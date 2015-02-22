@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -33,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
             query.whereEqualTo("Phone", userPhoneNumber);
             query.findInBackground(new FindCallback<ParseObject>() {
                 public void done(List<ParseObject> parseObjects, ParseException e) {
+
                     if (e == null) {
                         if (parseObjects.isEmpty()) {
                             Log.wtf("MainActivity", "You no in database!");
@@ -53,6 +56,8 @@ public class MainActivity extends ActionBarActivity {
                     }
                 }
             });
+
+            Toast.makeText(this, getString(R.string.prompt_welcome), Toast.LENGTH_SHORT).show();
 
             getSupportFragmentManager()
                     .beginTransaction()
