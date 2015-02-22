@@ -17,6 +17,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -49,18 +50,19 @@ public class UserRemindersFragment extends Fragment {
             this.mPhoneNumber = getArguments().getString(ARG_PHONE_NUMBER);
         }
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-        query.whereEqualTo("Phone", this.mPhoneNumber);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-
+        ParseQuery<ParseObject> queryUser = ParseQuery.getQuery("_User");
+        queryUser.whereEqualTo("Phone", this.mPhoneNumber);
+        queryUser.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
+                    Log.d(App.TAG, "Size: " + objects.size());
+                    String objectID = objects.get(0).getObjectId();
 
-                    String objectID = parseObjects.get(0).getString("objectId");
+                    Log.d(App.TAG, "Found a user: " + objectID);
 
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Reminder");
-                    query.whereEqualTo("objectId", objectID);
-                    query.findInBackground(new FindCallback<ParseObject>() {
+                    ParseQuery<ParseObject> queryReminder = ParseQuery.getQuery("Reminder");
+                    queryReminder.whereEqualTo("objectId", objectID);
+                    queryReminder.findInBackground(new FindCallback<ParseObject>() {
                         public void done(List<ParseObject> reminders, ParseException e) {
 
                             if (e == null) {
@@ -78,10 +80,46 @@ public class UserRemindersFragment extends Fragment {
                         }
                     });
                 } else {
-                    Log.wtf("User Reminders Fragment", "No phone number associated? What?");
+                    // Something went wrong.
                 }
             }
         });
+
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+//        query.whereEqualTo("Phone", "13056085012");
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> parseObjects, ParseException e) {
+//                if (e == null) {
+//
+//                    String objectID = parseObjects.get(0).getString("objectId");
+//
+//                    Log.d(App.TAG, "Found a user: " + objectID);
+//
+//                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Reminder");
+//                    query.whereEqualTo("objectId", objectID);
+//                    query.findInBackground(new FindCallback<ParseObject>() {
+//                        public void done(List<ParseObject> reminders, ParseException e) {
+//                            if (e == null) {
+//
+//                                ListView view = (ListView) getActivity().findViewById(R.id.user_reminders_list_view);
+//
+//                                ListAdapter adapter = new ArrayAdapter<>(getActivity(),
+//                                        android.R.layout.simple_list_item_1, android.R.id.text1, reminders);
+//
+//                                // Assign adapter to ListView
+//                                view.setAdapter(adapter);
+//
+//                            } else {
+//                                Log.wtf("User Reminders Fragment", "Couldn't load reminders?");
+//                            }
+//                        }
+//                    });
+//
+//                } else {
+//                    Log.wtf("User Reminders Fragment", "No phone number associated? What?");
+//                }
+//            }
+//        });
     }
 
     @Override
