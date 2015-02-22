@@ -18,14 +18,11 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class ReminderFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    /** Constant for our arg id for when we pass in he reminderId into the fragment. */
+    private static final String ARG_REMINDER_ID = "reminderId";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    /** The property where we will store the reminder id. */
+    private String mReminderId;
 
     private OnFragmentInteractionListener mListener;
 
@@ -33,15 +30,17 @@ public class ReminderFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param reminderId The ID associated with the reminder to pull.
      * @return A new instance of fragment ReminderFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static ReminderFragment newInstance() {
+    public static ReminderFragment newInstance(String reminderId) {
         ReminderFragment fragment = new ReminderFragment();
+
+        // Add the reminderId that was passed in into the new fragment as a bundled arg
         Bundle args = new Bundle();
+        args.putString(ARG_REMINDER_ID, reminderId);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -53,8 +52,7 @@ public class ReminderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            this.mReminderId = getArguments().getString(ARG_REMINDER_ID);
         }
     }
 
