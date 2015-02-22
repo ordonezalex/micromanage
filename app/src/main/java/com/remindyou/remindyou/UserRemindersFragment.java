@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -20,10 +19,22 @@ import com.parse.ParseQuery;
 
 import java.util.List;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link UserRemindersFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link UserRemindersFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
 public class UserRemindersFragment extends Fragment {
 
 //    private OnFragmentInteractionListener mListener;
     private String phoneNumber;
+
+    public UserRemindersFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -33,6 +44,7 @@ public class UserRemindersFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static UserRemindersFragment newInstance(String number) {
+
         UserRemindersFragment fragment = new UserRemindersFragment();
 
         fragment.setPhoneNumber(number);
@@ -40,12 +52,9 @@ public class UserRemindersFragment extends Fragment {
         return fragment;
     }
 
-    public UserRemindersFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
 
@@ -90,6 +99,7 @@ public class UserRemindersFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user_reminders, container, false);
     }
+
 
 //    // TODO: Rename method, update argument and hook method into UI event
 //    public void onButtonPressed(Uri uri) {
