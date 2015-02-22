@@ -1,12 +1,22 @@
 package com.remindyou.remindyou;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 
 /**
@@ -54,6 +64,18 @@ public class ReminderFragment extends Fragment {
         if (getArguments() != null) {
             this.mReminderId = getArguments().getString(ARG_REMINDER_ID);
         }
+
+        ParseQuery<ParseObject> qry = ParseQuery.getQuery("Reminders");
+        qry.whereEqualTo("objectId", this.mReminderId);
+        qry.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> reminders, ParseException e) {
+                if (e == null) {
+                    // Do stuff
+                } else {
+                    Log.wtf("ReminderFragment", "What a terrible failure!");
+                }
+            }
+        });
     }
 
     @Override
@@ -63,7 +85,6 @@ public class ReminderFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_reminder, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
