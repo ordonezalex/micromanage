@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- # Start fragment -->
     <string name="show_contact_list_dialog_button">Choose contact</string>
     <string name="reminder_content_hint">Stop by the grocery store</string>
+    <string name="reminder_created_prompt">Reminder created</string>
     <string name="submit_create_reminder">Done</string>
     <string name="cancel_create_reminder">Cancel</string>
+    <!-- # End fragment -->
+
+    <!-- # Start menu -->
+    <string name="action_new_reminder">Create</string>
+    <!-- # End menu -->
 
 </resources>
