@@ -5,6 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -15,12 +22,37 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-        String userPhoneNumber = tMgr.getLine1Number();
+        final String userPhoneNumber = tMgr.getLine1Number();
 
         if (userPhoneNumber == null) {
             Log.wtf(App.TAG, "User does not have a SIM card, or has multiple SIM cards.");
         } else {
             Log.d(App.TAG, "User's phone number: " + userPhoneNumber);
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
+            query.whereEqualTo("Phone", userPhoneNumber);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                public void done(List<ParseObject> parseObjects, ParseException e) {
+                    if (e == null) {
+                        if (parseObjects.isEmpty()) {
+                            Log.wtf("MainActivity", "You no in database!");
+
+                            ParseObject user = ParseUser.create("_User");
+                            user.add("Phone", userPhoneNumber);
+                            user.add("Password", "poop");
+                            user.add("Username", "IAmAUser");
+
+                            try {
+                                user.save();
+                            } catch (ParseException pe) {
+                                Log.d(App.TAG, pe.toString());
+                            }
+                        }
+                    } else {
+                        Log.wtf("MainActivity", "Error D:");
+                    }
+                }
+            });
 
             getSupportFragmentManager()
                     .beginTransaction()

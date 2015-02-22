@@ -1,5 +1,6 @@
 package com.remindyou.remindyou;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -21,11 +22,14 @@ import com.parse.FindCallback;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactListFragment extends ListFragment implements LoaderCallbacks<Cursor> {
 
     private CursorAdapter mAdapter;
+    List<String> name1 = new ArrayList<String>();
+    List<String> phno1 = new ArrayList<String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,27 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
         int layout = android.R.layout.simple_list_item_1;
         Cursor c = null; // there is no cursor yet
         int flags = 0; // no auto-requery! Loader requeries.
+        Log.i("phone", "testing");
+        getAllContacts(getActivity().getContentResolver());
         mAdapter = new SimpleCursorAdapter(context, layout, c, FROM, TO, flags);
+
+    }
+
+    private  void getAllContacts(ContentResolver cr) {
+
+        Cursor phones = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+        Log.i(App.TAG, "in contacts");
+        while (phones.moveToNext())
+        {
+            String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            Log.i("phone", name);
+            Log.i("phone", phoneNumber);
+            name1.add(name);
+            phno1.add(phoneNumber);
+        }
+
+        phones.close();
     }
 
     private void readNumbers()
@@ -87,7 +111,7 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
     private static final String[] PROJECTION = {
             Contacts._ID, // _ID is always required
             Contacts.DISPLAY_NAME_PRIMARY,
-            ContactsContract.CommonDataKinds.Phone.NUMBER// that's what we want to display
+            // that's what we want to display
     };
 
     // and name should be displayed in the text1 textview in item layout
