@@ -6,6 +6,8 @@ import com.parse.Parse;
 
 public class App extends Application {
 
+    public static final String TAG = "RY";
+
     public void onCreate() {
 
         super.onCreate();
