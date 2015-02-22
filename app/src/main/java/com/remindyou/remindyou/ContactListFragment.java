@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.net.ParseException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -30,6 +29,7 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
     private CursorAdapter mAdapter;
     List<String> name1 = new ArrayList<String>();
     List<String> phno1 = new ArrayList<String>();
+    List<String> intersection = new ArrayList<String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,8 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
         int layout = android.R.layout.simple_list_item_1;
         Cursor c = null; // there is no cursor yet
         int flags = 0; // no auto-requery! Loader requeries.
-        Log.i("phone", "testing");
         getAllContacts(getActivity().getContentResolver());
+        this.query();
         mAdapter = new SimpleCursorAdapter(context, layout, c, FROM, TO, flags);
 
     }
@@ -54,10 +54,9 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
         {
             String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            Log.i("phone", name);
-            Log.i("phone", phoneNumber);
             name1.add(name);
             phno1.add(phoneNumber);
+            Log.i("phoNo", phoneNumber);
         }
 
         phones.close();
@@ -72,21 +71,37 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
     //needs to get numbers from parse then compare to numbers from the phone
     private void query()
     {
-//        Integer amount = Integer.parseInt(Contacts._COUNT);
-//        for (int x = 0; x < amount; x++) {
-//            ParseQuery<ParseObject> qry = ParseQuery.getQuery("_USER");
-//            //phone needs to be equal to contacts number
-//            qry.whereEqualTo("Phone", skills.get(x).getString("skillId"));
-//            qry.findInBackground(new FindCallback<ParseObject>() {
-//                public void done(List<ParseObject> skills, ParseException e) {
-//                    if (e == null) {
-//                        //display contacts
-//                    } else {
-//                        Log.wtf("Build", "Shit");
-//                    }
-//                }
-//            });
-//        }
+        Log.i("phnoSize", phno1.size() + "");
+        ParseQuery<ParseObject> qry = ParseQuery.getQuery("_User");
+
+
+        qry.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> people, com.parse.ParseException e) {
+                if (e == null) {
+                   for (int i = 0; i < people.size(); i++)
+                   {
+                       String test = people.get(i).getString("Phone");
+                       Log.i("ParseTest", test);
+//                       intersection1.add(people.get(i).getString("Phone"));
+                       for (int j = 0; j < phno1.size(); j++)
+                       {
+                           if (("1"+phno1.get(j)).equals(people.get(i).getString("Phone")))
+                           {
+                                intersection.add(people.get(i).getString("Phone"));
+                           }
+                       }
+
+                   }
+
+                    Log.i("size", people.size() + "");
+
+                } else {
+                    Log.wtf("Build", "Shit");
+                }
+            }
+
+        });
 
     }
 
