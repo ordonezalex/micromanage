@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -52,12 +53,23 @@ public class ReminderFragment extends Fragment {
             this.mReminderId = getArguments().getString(ARG_REMINDER_ID);
         }
 
-        ParseQuery<ParseObject> qry = ParseQuery.getQuery("Reminders");
+        ParseQuery<ParseObject> qry = ParseQuery.getQuery("Reminder");
         qry.whereEqualTo("objectId", this.mReminderId);
         qry.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> reminders, ParseException e) {
                 if (e == null) {
-                    reminders.get(0).getString("from");
+                    String from = reminders.get(0).getString("from");
+                    String content = reminders.get(0).getString("content");
+                    String date = reminders.get(0).getDate("date").toString();
+
+                    TextView contentTxt = (TextView) getActivity().findViewById(R.id.reminder_content);
+                    contentTxt.setText(content);
+
+                    TextView fromTxt = (TextView) getActivity().findViewById(R.id.fromNumber);
+                    fromTxt.setText(from);
+
+                    TextView dateTxt = (TextView) getActivity().findViewById(R.id.date);
+                    dateTxt.setText(date);
                 } else {
                     Log.wtf("ReminderFragment", "No reminder with id " + mReminderId + " exists!");
                 }
