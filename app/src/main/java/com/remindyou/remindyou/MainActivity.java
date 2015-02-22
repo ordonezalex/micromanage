@@ -2,63 +2,35 @@ package com.remindyou.remindyou;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 
 public class MainActivity extends ActionBarActivity {
 
-    private String userPhoneNumber;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        FragmentManager manager = getSupportFragmentManager();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-        String mPhoneNumber = tMgr.getLine1Number();
+        String userPhoneNumber = tMgr.getLine1Number();
 
-        if (mPhoneNumber == null) {
-            System.out.print("User does not have a SIM card, or has multiple SIM cards.");
+        if (userPhoneNumber == null) {
+            Log.wtf(App.TAG, "User does not have a SIM card, or has multiple SIM cards.");
         } else {
-            userPhoneNumber = mPhoneNumber;
-            System.out.println("User's phone number: " + userPhoneNumber);
+            Log.d(App.TAG, "User's phone number: " + userPhoneNumber);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, UserRemindersFragment.newInstance(userPhoneNumber))
+                    .commit();
         }
 
-        manager.beginTransaction()
-                .replace(R.id.container, UserRemindersFragment.newInstance(userPhoneNumber))
-                .commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public String getUserPhoneNumber() {
-
-        return userPhoneNumber;
+        // Maybe we should do something if we do not get a number from them.
+        // If we do something, then we should reverse the if-else statement.
+        // We should check if the phone number is not null, then show the fragment.
+        // If the phone number is null, then we do whatever else (without else statement).
     }
 }
