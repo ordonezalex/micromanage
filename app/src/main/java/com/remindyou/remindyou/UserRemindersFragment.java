@@ -1,7 +1,5 @@
 package com.remindyou.remindyou;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -22,15 +19,18 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link UserRemindersFragment.OnFragmentInteractionListener} interface
+ * interface
  * to handle interaction events.
  * Use the {@link UserRemindersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class UserRemindersFragment extends Fragment {
 
-//    private OnFragmentInteractionListener mListener;
-    private String phoneNumber;
+    /** Constant for our arg id for when we pass in he reminderId into the fragment. */
+    private static final String ARG_PHONE_NUMBER = "phoneNumber";
+
+    /** The property where we will store the reminder id. */
+    private String mPhoneNumber;
 
     public UserRemindersFragment() {
         // Required empty public constructor
@@ -43,11 +43,13 @@ public class UserRemindersFragment extends Fragment {
      * @return A new instance of fragment UserRemindersFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserRemindersFragment newInstance(String number) {
+    public static UserRemindersFragment newInstance(String phoneNumber) {
 
         UserRemindersFragment fragment = new UserRemindersFragment();
 
-        fragment.setPhoneNumber(number);
+        Bundle args = new Bundle();
+        args.putString(ARG_PHONE_NUMBER, phoneNumber);
+        fragment.setArguments(args);
 
         return fragment;
     }
@@ -57,9 +59,12 @@ public class UserRemindersFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
 
+        if (getArguments() != null) {
+            this.mPhoneNumber = getArguments().getString(ARG_PHONE_NUMBER);
+        }
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
-        query.whereEqualTo("Phone", phoneNumber);
+        query.whereEqualTo("Phone", this.mPhoneNumber);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
@@ -124,10 +129,6 @@ public class UserRemindersFragment extends Fragment {
 //        super.onDetach();
 //        mListener = null;
 //    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 
 //    /**
 //     * This interface must be implemented by activities that contain this

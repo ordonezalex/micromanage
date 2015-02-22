@@ -20,10 +20,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        manager.beginTransaction()
-                .replace(R.id.container, UserRemindersFragment.newInstance(userPhoneNumber))
-                .commit();
-
         TelephonyManager tMgr = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         String mPhoneNumber = tMgr.getLine1Number();
 
@@ -33,6 +29,10 @@ public class MainActivity extends ActionBarActivity {
             userPhoneNumber = mPhoneNumber;
             System.out.println("User's phone number: " + userPhoneNumber);
         }
+
+        manager.beginTransaction()
+                .replace(R.id.container, UserRemindersFragment.newInstance(userPhoneNumber))
+                .commit();
     }
 
     @Override
