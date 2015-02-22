@@ -28,6 +28,12 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
         mAdapter = new SimpleCursorAdapter(context, layout, c, FROM, TO, flags);
     }
 
+    public static ContactListFragment newInstance() {
+
+        ContactListFragment fragment = new ContactListFragment();
+        return fragment;
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
