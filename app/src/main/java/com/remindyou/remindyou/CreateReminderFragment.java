@@ -14,24 +14,21 @@ import com.parse.ParseObject;
 
 public class CreateReminderFragment extends Fragment {
 
-    /**
-     * Constant for our arg id for when we pass in he reminderId into the fragment.
-     */
-    private static final String ARG_PHONE_NUMBER = "phoneNumber";
+    private static final String ARG_TO_PHONE_NUMBER = "toPhoneNumber";
+    private static final String ARG_FROM_PHONE_NUMBER = "fromPhoneNumber";
 
-    /**
-     * The property where we will store the reminder id.
-     */
-    private String phoneNumber;
+    private String toPhoneNumber;
+    private String fromPhoneNumber;
 
-    public static CreateReminderFragment newInstance(String phoneNumber) {
+    public static CreateReminderFragment newInstance(String toPhoneNumber, String fromPhoneNumber) {
 
         Log.d(App.TAG, "Created CreateReminderFragment.");
 
         CreateReminderFragment fragment = new CreateReminderFragment();
 
         Bundle args = new Bundle();
-        args.putString(ARG_PHONE_NUMBER, phoneNumber);
+        args.putString(ARG_TO_PHONE_NUMBER, toPhoneNumber);
+        args.putString(ARG_FROM_PHONE_NUMBER, fromPhoneNumber);
         fragment.setArguments(args);
 
         return fragment;
@@ -42,6 +39,8 @@ public class CreateReminderFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            this.setToPhoneNumber(getArguments().getString(ARG_TO_PHONE_NUMBER));
+            this.setFromPhoneNumber(getArguments().getString(ARG_FROM_PHONE_NUMBER));
         }
     }
 
@@ -88,8 +87,8 @@ public class CreateReminderFragment extends Fragment {
 
         // Start create reminder
         ParseObject reminder = new ParseObject("Reminder");
-        reminder.put("to", "13864903600");
-        reminder.put("from", "13864903600");
+        reminder.put("to", this.getToPhoneNumber());
+        reminder.put("from", this.getFromPhoneNumber());
         reminder.put("content", reminderContent);
         reminder.saveInBackground();
         // End create reminder
@@ -100,7 +99,7 @@ public class CreateReminderFragment extends Fragment {
         // Transition to new fragment
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, UserRemindersFragment.newInstance(phoneNumber))
+                .replace(R.id.container, UserRemindersFragment.newInstance(toPhoneNumber))
                 .commit();
     }
 
@@ -111,7 +110,27 @@ public class CreateReminderFragment extends Fragment {
         // Go back one, probably to UserRemindersFragment.
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, UserRemindersFragment.newInstance(phoneNumber))
+                .replace(R.id.container, UserRemindersFragment.newInstance(toPhoneNumber))
                 .commit();
+    }
+
+    public void setToPhoneNumber(String toPhoneNumber) {
+
+        this.toPhoneNumber = toPhoneNumber;
+    }
+
+    public void setFromPhoneNumber(String fromPhoneNumber) {
+
+        this.fromPhoneNumber = fromPhoneNumber;
+    }
+
+    public String getToPhoneNumber() {
+
+        return this.toPhoneNumber;
+    }
+
+    public String getFromPhoneNumber() {
+
+        return this.fromPhoneNumber;
     }
 }

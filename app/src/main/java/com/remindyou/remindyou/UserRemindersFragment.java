@@ -109,6 +109,7 @@ public class UserRemindersFragment extends Fragment {
         if (itemId == R.id.action_new_reminder) {
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
+                    // TODO: Add second parameter: newInstance(FROM, TO)
                     .replace(R.id.container, CreateReminderFragment.newInstance(mPhoneNumber))
                     .commit();
 
