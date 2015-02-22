@@ -15,6 +15,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
@@ -27,9 +28,11 @@ import java.util.List;
 public class ContactListFragment extends ListFragment implements LoaderCallbacks<Cursor> {
 
     private CursorAdapter mAdapter;
+    private ArrayAdapter mData;
     List<String> name1 = new ArrayList<String>();
     List<String> phno1 = new ArrayList<String>();
     List<String> intersection = new ArrayList<String>();
+    String[] names;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
         getAllContacts(getActivity().getContentResolver());
         this.query();
         mAdapter = new SimpleCursorAdapter(context, layout, c, FROM, TO, flags);
+        mData = new ArrayAdapter(context, layout);
 
     }
 
@@ -60,12 +64,6 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
         }
 
         phones.close();
-    }
-
-    private void readNumbers()
-    {
-
-
     }
 
     //needs to get numbers from parse then compare to numbers from the phone
@@ -94,6 +92,9 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
 
                    }
 
+                    mData.addAll(intersection);
+                    mData.notifyDataSetChanged();
+
                     Log.i("size", people.size() + "");
 
                 } else {
@@ -116,7 +117,7 @@ public class ContactListFragment extends ListFragment implements LoaderCallbacks
         super.onActivityCreated(savedInstanceState);
 
         // each time we are started use our listadapter
-        setListAdapter(mAdapter);
+        setListAdapter(mData);
         // and tell loader manager to start loading
         getLoaderManager().initLoader(0, null, this);
     }
