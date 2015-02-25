@@ -6,7 +6,7 @@ import com.parse.Parse;
 
 public class App extends Application {
 
-    public static final String TAG = "RY";
+    public static final String TAG = "MicroManage";
 
     public void onCreate() {
 
